@@ -1,4 +1,4 @@
-import type { Style, FusionStatus } from '../types';
+import type { Style, FusionStatus, FusionMode } from '../types';
 import { ImageUploader } from './ImageUploader';
 import { StyleIntensitySlider } from './StyleIntensitySlider';
 import { OutputPreview } from './OutputPreview';
@@ -8,6 +8,7 @@ interface FusionWorkspaceProps {
   selectedStyle: Style | null;
   intensity: number;
   fusionStatus: FusionStatus;
+  fusionMode: FusionMode;
   outputUrl: string | null;
   error: string | null;
   onContentImageChange: (img: string | null) => void;
@@ -22,6 +23,7 @@ export function FusionWorkspace({
   selectedStyle,
   intensity,
   fusionStatus,
+  fusionMode,
   outputUrl,
   error,
   onContentImageChange,
@@ -119,6 +121,7 @@ export function FusionWorkspace({
         {/* Right: Output */}
         <OutputPreview
           status={fusionStatus}
+          mode={fusionMode}
           outputUrl={outputUrl}
           error={error}
           onRetry={onRetry}

@@ -15,13 +15,14 @@ export function App() {
   const [styles, setStyles] = useState<Style[]>(CURATED_STYLES);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
-  const { fuse, retry, status, outputUrl, error } = useFusion();
+  const { fuse, retry, status, mode, outputUrl, error } = useFusion();
 
   const handleFuse = useCallback(() => {
     if (!contentImage || !selectedStyle) return;
     fuse({
       contentImage,
       styleId: selectedStyle.id,
+      style: selectedStyle,
       styleImage: selectedStyle.referenceImageUrl,
       intensity,
     });
@@ -35,6 +36,7 @@ export function App() {
         fuse({
           contentImage,
           styleId: style.id,
+          style,
           styleImage: style.referenceImageUrl,
           intensity,
         });
@@ -76,6 +78,7 @@ export function App() {
               selectedStyle={selectedStyle}
               intensity={intensity}
               fusionStatus={status}
+              fusionMode={mode}
               outputUrl={outputUrl}
               error={error}
               onContentImageChange={setContentImage}

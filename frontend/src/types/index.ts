@@ -24,9 +24,12 @@ export interface Style {
 export interface FusionRequest {
   contentImage: string;
   styleId?: string;
+  style?: Style;
   styleImage?: string;
   intensity: number;
 }
+
+export type FusionMode = 'ai' | 'local' | null;
 
 export type FusionStatus = 'idle' | 'loading' | 'success' | 'error';
 

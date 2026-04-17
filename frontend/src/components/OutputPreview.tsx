@@ -1,14 +1,15 @@
-import type { FusionStatus } from '../types';
+import type { FusionStatus, FusionMode } from '../types';
 import { downloadImage } from '../services/api';
 
 interface OutputPreviewProps {
   status: FusionStatus;
+  mode: FusionMode;
   outputUrl: string | null;
   error: string | null;
   onRetry: () => void;
 }
 
-export function OutputPreview({ status, outputUrl, error, onRetry }: OutputPreviewProps) {
+export function OutputPreview({ status, mode, outputUrl, error, onRetry }: OutputPreviewProps) {
   return (
     <div className="flex flex-col gap-3 h-full">
       <div className="flex items-center justify-between">
@@ -123,6 +124,20 @@ export function OutputPreview({ status, outputUrl, error, onRetry }: OutputPrevi
               alt="Fusion output"
               className="w-full h-full object-contain"
             />
+            {/* Mode badge */}
+            <div className="absolute bottom-2 left-2">
+              {mode === 'local' ? (
+                <span className="flex items-center gap-1.5 px-2 py-1 text-[10px] font-medium bg-amber-500/15 text-amber-400 border border-amber-500/25 rounded-lg backdrop-blur-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  Local preview · add REPLICATE_API_TOKEN for AI
+                </span>
+              ) : mode === 'ai' ? (
+                <span className="flex items-center gap-1.5 px-2 py-1 text-[10px] font-medium bg-violet-500/15 text-violet-300 border border-violet-500/25 rounded-lg backdrop-blur-sm">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 22 7 22 17 12 22 2 17 2 7"/></svg>
+                  AI fusion
+                </span>
+              ) : null}
+            </div>
           </div>
         )}
       </div>
