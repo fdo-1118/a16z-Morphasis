@@ -16,19 +16,21 @@ const DEFAULT_PARAMS: StyleParameters = {
   contrast: 100,
 };
 
+const sans = { fontFamily: "'domaine-sans-text', 'Helvetica Neue', Arial, sans-serif" };
+
 function ParamSlider({ label, value, min, max, onChange }: {
   label: string; value: number; min: number; max: number;
   onChange: (v: number) => void;
 }) {
   return (
     <div className="flex items-center gap-3">
-      <span className="w-32 text-xs text-zinc-500 shrink-0">{label}</span>
+      <span className="w-32 text-xs text-zinc-500 shrink-0" style={sans}>{label}</span>
       <input
         type="range" min={min} max={max} value={value}
         onChange={e => onChange(Number(e.target.value))}
-        className="flex-1 h-1 appearance-none bg-surface-3 rounded-full cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-violet-500"
+        className="flex-1 h-0.5 appearance-none bg-surface-4 cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-zinc-400 [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-border-default"
       />
-      <span className="w-8 text-xs font-mono text-zinc-400 text-right">{value}</span>
+      <span className="w-8 text-xs font-mono text-zinc-500 text-right">{value}</span>
     </div>
   );
 }
@@ -74,14 +76,27 @@ export function CreateStyleModal({ onClose, onSave }: CreateStyleModalProps) {
     }
   };
 
+  const inputClass = "w-full px-3 py-2 text-sm bg-surface-2 border border-border-subtle rounded text-zinc-300 placeholder-zinc-700 focus:outline-none focus:border-border-default transition-colors";
+
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-      <div className="w-full max-w-lg bg-surface-1 border border-border-subtle rounded-2xl shadow-2xl animate-slide-up overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-fade-in">
+      <div
+        className="w-full max-w-lg bg-surface-1 border border-border-subtle shadow-xl animate-slide-up overflow-hidden"
+        style={{ borderRadius: '4px' }}
+      >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-border-subtle">
-          <h2 className="text-sm font-semibold text-white">Create New Style</h2>
-          <button onClick={onClose} className="p-1.5 hover:bg-surface-3 rounded-lg text-zinc-500 hover:text-white transition-colors">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <h2
+            className="text-base font-normal text-zinc-300"
+            style={{ fontFamily: "'orpheus-pro', 'Big Caslon', Georgia, serif" }}
+          >
+            Create New Style
+          </h2>
+          <button
+            onClick={onClose}
+            className="p-1.5 hover:bg-surface-3 rounded text-zinc-500 hover:text-zinc-400 transition-colors"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
             </svg>
           </button>
@@ -90,21 +105,23 @@ export function CreateStyleModal({ onClose, onSave }: CreateStyleModalProps) {
         <div className="p-5 flex flex-col gap-4 max-h-[70vh] overflow-y-auto">
           {/* Reference image */}
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Reference Image (optional)</label>
+            <label className="text-[10px] font-medium text-zinc-500 uppercase tracking-[0.12em]" style={sans}>
+              Reference Image (optional)
+            </label>
             <div
               onClick={() => fileRef.current?.click()}
-              className="relative rounded-xl border-2 border-dashed border-border-subtle hover:border-violet-600/60 cursor-pointer transition-colors overflow-hidden"
-              style={{ aspectRatio: '3/1' }}
+              className="relative border-2 border-dashed border-border-subtle hover:border-border-default cursor-pointer transition-colors overflow-hidden bg-surface-2"
+              style={{ aspectRatio: '3/1', borderRadius: '2px' }}
             >
               {referenceImage ? (
                 <img src={referenceImage} alt="Reference" className="w-full h-full object-cover" />
               ) : (
-                <div className="absolute inset-0 flex items-center justify-center gap-2 text-zinc-600">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <div className="absolute inset-0 flex items-center justify-center gap-2 text-zinc-500">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
                     <polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
                   </svg>
-                  <span className="text-xs">Upload style reference image</span>
+                  <span className="text-xs" style={sans}>Upload style reference image</span>
                 </div>
               )}
               <input ref={fileRef} type="file" accept="image/*" className="hidden"
@@ -114,29 +131,31 @@ export function CreateStyleModal({ onClose, onSave }: CreateStyleModalProps) {
 
           {/* Name */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Style Name *</label>
+            <label className="text-[10px] font-medium text-zinc-500 uppercase tracking-[0.12em]" style={sans}>Style Name *</label>
             <input
               type="text" value={name} onChange={e => setName(e.target.value)}
               placeholder="e.g. Moody Noir"
-              className="w-full px-3 py-2 text-sm bg-surface-2 border border-border-subtle rounded-lg text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-violet-600/60 focus:ring-1 focus:ring-violet-600/30"
+              className={inputClass}
+              style={sans}
             />
           </div>
 
           {/* Description */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Description</label>
+            <label className="text-[10px] font-medium text-zinc-500 uppercase tracking-[0.12em]" style={sans}>Description</label>
             <textarea
               value={description} onChange={e => setDescription(e.target.value)}
               placeholder="Describe the visual character of this style..."
               rows={2}
-              className="w-full px-3 py-2 text-sm bg-surface-2 border border-border-subtle rounded-lg text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-violet-600/60 focus:ring-1 focus:ring-violet-600/30 resize-none"
+              className={`${inputClass} resize-none`}
+              style={sans}
             />
           </div>
 
           {/* Parameters */}
           <div className="flex flex-col gap-3">
-            <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Effect Parameters</label>
-            <div className="flex flex-col gap-2.5 p-3 bg-surface-2 rounded-lg border border-border-subtle">
+            <label className="text-[10px] font-medium text-zinc-500 uppercase tracking-[0.12em]" style={sans}>Effect Parameters</label>
+            <div className="flex flex-col gap-3 p-3 bg-surface-2 border border-border-subtle" style={{ borderRadius: '2px' }}>
               <ParamSlider label="Blur Intensity" value={params.blurIntensity} min={0} max={100} onChange={v => setParam('blurIntensity', v)} />
               <ParamSlider label="Pixelation" value={params.pixelation} min={0} max={100} onChange={v => setParam('pixelation', v)} />
               <ParamSlider label="Color Temp" value={params.colorTemperature} min={-100} max={100} onChange={v => setParam('colorTemperature', v)} />
@@ -148,11 +167,12 @@ export function CreateStyleModal({ onClose, onSave }: CreateStyleModalProps) {
 
           {/* Tags */}
           <div className="flex flex-col gap-1.5">
-            <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider">Tags (comma separated)</label>
+            <label className="text-[10px] font-medium text-zinc-500 uppercase tracking-[0.12em]" style={sans}>Tags (comma separated)</label>
             <input
               type="text" value={tags} onChange={e => setTags(e.target.value)}
               placeholder="e.g. dark, moody, cinematic"
-              className="w-full px-3 py-2 text-sm bg-surface-2 border border-border-subtle rounded-lg text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-violet-600/60 focus:ring-1 focus:ring-violet-600/30"
+              className={inputClass}
+              style={sans}
             />
           </div>
 
@@ -162,29 +182,45 @@ export function CreateStyleModal({ onClose, onSave }: CreateStyleModalProps) {
               <button
                 key={v}
                 onClick={() => setVisibility(v)}
-                className={`flex-1 py-2 text-xs font-medium rounded-lg border transition-colors capitalize ${
+                className={`flex-1 py-2 text-[11px] font-medium border transition-colors ${
                   visibility === v
-                    ? 'border-violet-600 bg-violet-950/60 text-violet-300'
-                    : 'border-border-subtle text-zinc-500 hover:border-border-default'
+                    ? 'text-white'
+                    : 'border-border-subtle text-zinc-500 hover:border-border-default bg-surface-2'
                 }`}
+                style={{
+                  ...sans,
+                  borderRadius: '2px',
+                  ...(visibility === v ? { background: '#002D2D', borderColor: '#002D2D' } : {}),
+                  letterSpacing: '0.04em',
+                  textTransform: 'uppercase',
+                }}
               >
-                {v === 'private' ? '🔒 Private' : '🌐 Share with Community'}
+                {v === 'private' ? 'Private' : 'Share with Community'}
               </button>
             ))}
           </div>
 
-          {error && <p className="text-xs text-red-400 bg-red-500/10 border border-red-500/20 px-3 py-2 rounded-lg">{error}</p>}
+          {error && (
+            <p className="text-xs text-red-500 bg-red-50 border border-red-200 px-3 py-2" style={{ ...sans, borderRadius: '2px' }}>
+              {error}
+            </p>
+          )}
         </div>
 
         {/* Footer */}
         <div className="flex gap-2 px-5 py-4 border-t border-border-subtle">
-          <button onClick={onClose} className="flex-1 py-2 text-sm text-zinc-400 hover:text-white bg-surface-2 hover:bg-surface-3 rounded-lg border border-border-subtle transition-colors">
+          <button
+            onClick={onClose}
+            className="flex-1 py-2 text-xs font-medium text-zinc-500 hover:text-zinc-400 bg-surface-2 hover:bg-surface-3 border border-border-subtle transition-colors uppercase tracking-[0.06em]"
+            style={{ ...sans, borderRadius: '2px' }}
+          >
             Cancel
           </button>
           <button
             onClick={handleSubmit}
             disabled={saving}
-            className="flex-1 py-2 text-sm font-medium bg-violet-600 hover:bg-violet-500 disabled:opacity-50 text-white rounded-lg transition-colors"
+            className="flex-1 py-2 text-xs font-medium text-white disabled:opacity-50 transition-opacity uppercase tracking-[0.08em]"
+            style={{ ...sans, background: '#002D2D', borderRadius: '2px' }}
           >
             {saving ? 'Saving…' : 'Save Style'}
           </button>

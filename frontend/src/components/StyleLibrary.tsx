@@ -9,6 +9,8 @@ interface StyleLibraryProps {
   onSelect: (style: Style) => void;
 }
 
+const sans = { fontFamily: "'domaine-sans-text', 'Helvetica Neue', Arial, sans-serif" };
+
 export function StyleLibrary({ styles, selectedStyle, onSelect }: StyleLibraryProps) {
   const [query, setQuery] = useState('');
   const [activeTag, setActiveTag] = useState<string | null>(null);
@@ -25,17 +27,28 @@ export function StyleLibrary({ styles, selectedStyle, onSelect }: StyleLibraryPr
   const user = filtered.filter(s => s.author !== 'curated');
 
   return (
-    <div className="flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm font-semibold text-zinc-300">Style Library</h2>
-        <span className="text-xs text-zinc-600">{filtered.length} styles</span>
+    <div className="flex flex-col gap-5">
+      {/* Section header */}
+      <div className="flex items-end justify-between border-b border-border-subtle pb-3">
+        <div>
+          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-500 mb-1" style={sans}>
+            Style Library
+          </p>
+          <h2
+            className="text-xl font-normal text-zinc-300"
+            style={{ fontFamily: "'orpheus-pro', 'Big Caslon', Georgia, serif" }}
+          >
+            Curated Visual Styles
+          </h2>
+        </div>
+        <span className="text-xs text-zinc-700 pb-0.5" style={sans}>{filtered.length} styles</span>
       </div>
 
       {/* Search */}
       <div className="relative">
         <svg
-          width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-600 pointer-events-none"
+          width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 pointer-events-none"
         >
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -45,19 +58,21 @@ export function StyleLibrary({ styles, selectedStyle, onSelect }: StyleLibraryPr
           placeholder="Search styles..."
           value={query}
           onChange={e => setQuery(e.target.value)}
-          className="w-full pl-9 pr-3 py-2 text-sm bg-surface-2 border border-border-subtle rounded-lg text-zinc-300 placeholder-zinc-600 focus:outline-none focus:border-violet-600/60 focus:ring-1 focus:ring-violet-600/30 transition-colors"
+          className="w-full pl-9 pr-3 py-2 text-sm bg-surface-2 border border-border-subtle rounded text-zinc-300 placeholder-zinc-700 focus:outline-none focus:border-border-default transition-colors"
+          style={sans}
         />
       </div>
 
-      {/* Tags filter */}
+      {/* Tag filter */}
       <div className="flex flex-wrap gap-1.5">
         <button
           onClick={() => setActiveTag(null)}
-          className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
+          className={`px-2.5 py-1 text-[11px] border transition-colors ${
             !activeTag
-              ? 'border-violet-600 bg-violet-950/60 text-violet-300'
+              ? 'border-zinc-400 bg-zinc-400 text-white'
               : 'border-border-subtle text-zinc-500 hover:border-border-default hover:text-zinc-400'
           }`}
+          style={{ ...sans, borderRadius: '2px' }}
         >
           All
         </button>
@@ -65,11 +80,12 @@ export function StyleLibrary({ styles, selectedStyle, onSelect }: StyleLibraryPr
           <button
             key={tag}
             onClick={() => setActiveTag(activeTag === tag ? null : tag)}
-            className={`px-2.5 py-1 text-xs rounded-full border transition-colors ${
+            className={`px-2.5 py-1 text-[11px] border transition-colors ${
               activeTag === tag
-                ? 'border-violet-600 bg-violet-950/60 text-violet-300'
+                ? 'border-zinc-400 bg-zinc-400 text-white'
                 : 'border-border-subtle text-zinc-500 hover:border-border-default hover:text-zinc-400'
             }`}
+            style={{ ...sans, borderRadius: '2px' }}
           >
             {tag}
           </button>
@@ -78,8 +94,11 @@ export function StyleLibrary({ styles, selectedStyle, onSelect }: StyleLibraryPr
 
       {/* Curated styles */}
       {curated.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Curated</p>
+        <div className="flex flex-col gap-3">
+          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-500 flex items-center gap-2" style={sans}>
+            <span>Curated</span>
+            <span className="h-px flex-1 bg-border-subtle" />
+          </p>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
             {curated.map(style => (
               <StyleCard
@@ -95,8 +114,11 @@ export function StyleLibrary({ styles, selectedStyle, onSelect }: StyleLibraryPr
 
       {/* User styles */}
       {user.length > 0 && (
-        <div className="flex flex-col gap-2">
-          <p className="text-[10px] font-mono text-zinc-600 uppercase tracking-widest">Your Styles</p>
+        <div className="flex flex-col gap-3">
+          <p className="text-[10px] font-medium uppercase tracking-[0.14em] text-zinc-500 flex items-center gap-2" style={sans}>
+            <span>Your Styles</span>
+            <span className="h-px flex-1 bg-border-subtle" />
+          </p>
           <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 xl:grid-cols-4">
             {user.map(style => (
               <StyleCard
@@ -111,9 +133,13 @@ export function StyleLibrary({ styles, selectedStyle, onSelect }: StyleLibraryPr
       )}
 
       {filtered.length === 0 && (
-        <div className="py-12 text-center">
-          <p className="text-sm text-zinc-600">No styles match your search.</p>
-          <button onClick={() => { setQuery(''); setActiveTag(null); }} className="mt-2 text-xs text-violet-500 hover:text-violet-400">
+        <div className="py-12 text-center border border-dashed border-border-subtle rounded">
+          <p className="text-sm text-zinc-500" style={sans}>No styles match your search.</p>
+          <button
+            onClick={() => { setQuery(''); setActiveTag(null); }}
+            className="mt-2 text-xs text-zinc-400 underline underline-offset-2 hover:text-zinc-300"
+            style={sans}
+          >
             Clear filters
           </button>
         </div>
