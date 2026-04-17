@@ -29,12 +29,13 @@ export function PreviewPanel({ status, mode, outputUrl, error, onRetry }: Previe
 
   return (
     <div className="flex flex-col h-full p-6 gap-4">
-      <h2
-        className="text-base font-semibold text-zinc-300 shrink-0"
-        style={{ fontFamily: "'domaine-sans-text', 'Helvetica Neue', Arial, sans-serif" }}
+      {/* H4 — Domaine Text */}
+      <h4
+        className="text-lg font-normal text-zinc-300 shrink-0"
+        style={{ fontFamily: "'domaine-text', Baskerville, Georgia, serif" }}
       >
         Preview
-      </h2>
+      </h4>
 
       {/* Preview image area */}
       <div className="flex-1 bg-surface-1 border border-border-subtle overflow-hidden relative" style={{ borderRadius: '2px', minHeight: '200px' }}>

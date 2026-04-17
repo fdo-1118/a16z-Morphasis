@@ -6,34 +6,57 @@ interface StyleSelectorProps {
   onSelect: (style: Style) => void;
 }
 
+const domaine = { fontFamily: "'domaine-text', Baskerville, Georgia, serif" };
 const sans = { fontFamily: "'domaine-sans-text', 'Helvetica Neue', Arial, sans-serif" };
 
 export function StyleSelector({ selectedStyle, onSelect }: StyleSelectorProps) {
   return (
     <div className="flex flex-col h-full p-6 overflow-y-auto">
-      <h2
-        className="text-base font-semibold text-zinc-300 mb-5"
-        style={{ fontFamily: "'domaine-sans-text', 'Helvetica Neue', Arial, sans-serif" }}
+      {/* H4 — Domaine Text */}
+      <h4
+        className="text-lg font-normal text-zinc-300 mb-5"
+        style={domaine}
       >
         Curated Styles
-      </h2>
+      </h4>
 
-      <div className="grid grid-cols-2 gap-2">
+      <div className="flex flex-col gap-2">
         {CURATED_STYLES.map(style => {
           const isSelected = selectedStyle?.id === style.id;
           return (
             <button
               key={style.id}
               onClick={() => onSelect(style)}
-              className={`py-2.5 px-3 text-left text-[10px] font-medium uppercase tracking-[0.1em] border transition-all ${
+              className={`flex items-center gap-3 w-full border transition-all text-left ${
                 isSelected
-                  ? 'bg-zinc-300 text-white border-zinc-300'
-                  : 'bg-surface-2 text-zinc-400 border-border-subtle hover:border-border-default hover:text-zinc-300'
+                  ? 'border-zinc-400 bg-surface-2'
+                  : 'border-border-subtle bg-surface-2 hover:border-border-default'
               }`}
-              style={{ ...sans, borderRadius: '2px' }}
+              style={{ borderRadius: '2px' }}
               title={style.description}
             >
-              {style.name}
+              {/* Style thumbnail preview */}
+              <div
+                className="w-14 h-14 shrink-0"
+                style={{ background: style.thumbnail }}
+              />
+              {/* Name */}
+              <span
+                className={`text-[11px] font-medium uppercase tracking-[0.08em] ${
+                  isSelected ? 'text-zinc-200' : 'text-zinc-400'
+                }`}
+                style={sans}
+              >
+                {style.name}
+              </span>
+              {/* Selected check */}
+              {isSelected && (
+                <div className="ml-auto mr-3 shrink-0">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-400">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </div>
+              )}
             </button>
           );
         })}

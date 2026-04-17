@@ -27,30 +27,31 @@ export function CenterPanel({ contentImage, secondImage, onSecondImage }: Center
   }, [handleFile]);
 
   return (
+    /* flex-col + h-full fills the parent column exactly */
     <div className="flex flex-col h-full">
-      {/* First image */}
-      <div className="flex-1 overflow-hidden">
+
+      {/* First image — fills all space above the second upload zone, image cropped/centered */}
+      <div className="flex-1 min-h-0 overflow-hidden">
         <img
           src={contentImage}
           alt="Content"
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover object-center"
         />
       </div>
 
-      {/* Second upload zone */}
+      {/* Second upload zone — fixed height, never grows */}
       <div
-        className={`border-t border-border-subtle cursor-pointer transition-colors flex-shrink-0 ${
+        className={`h-40 shrink-0 border-t border-border-subtle cursor-pointer transition-colors ${
           isDragOver ? 'bg-surface-3' : 'bg-surface-1 hover:bg-surface-2'
         }`}
-        style={{ minHeight: '160px' }}
         onClick={() => !secondImage && inputRef.current?.click()}
         onDrop={handleDrop}
         onDragOver={e => { e.preventDefault(); setIsDragOver(true); }}
         onDragLeave={() => setIsDragOver(false)}
       >
         {secondImage ? (
-          <div className="relative w-full h-full" style={{ minHeight: '160px' }}>
-            <img src={secondImage} alt="Style" className="w-full h-full object-cover" style={{ minHeight: '160px' }} />
+          <div className="relative w-full h-full">
+            <img src={secondImage} alt="Style" className="w-full h-full object-cover object-center" />
             <button
               onClick={e => { e.stopPropagation(); inputRef.current?.click(); }}
               className="absolute bottom-2 right-2 px-2.5 py-1 text-[10px] font-medium bg-black/40 text-white border border-white/20 backdrop-blur-sm uppercase tracking-wide"
@@ -60,14 +61,14 @@ export function CenterPanel({ contentImage, secondImage, onSecondImage }: Center
             </button>
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center gap-3 p-6 text-center" style={{ minHeight: '160px' }}>
+          <div className="flex flex-col items-center justify-center gap-2 h-full text-center px-6">
             <div className="relative">
-              <svg width="30" height="30" viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-zinc-500">
+              <svg width="28" height="28" viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-zinc-500">
                 <rect x="5" y="5" width="30" height="30" rx="3" />
                 <circle cx="14" cy="15" r="3" />
                 <polyline points="35 26 27 17 8 34" />
               </svg>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-400 absolute -top-1 -right-1.5">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-400 absolute -top-1 -right-1.5">
                 <line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" />
               </svg>
             </div>

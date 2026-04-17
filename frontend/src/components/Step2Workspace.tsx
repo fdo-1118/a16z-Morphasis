@@ -37,10 +37,11 @@ export function Step2Workspace({
   }, []);
 
   return (
-    <div className="flex-1 grid grid-cols-3 divide-x divide-border-subtle overflow-hidden">
+    /* h-full + min-h-0 ensures columns fill exactly the parent height, never more */
+    <div className="h-full grid grid-cols-3 divide-x divide-border-subtle overflow-hidden">
       {/* Left — Curated Styles */}
       <div
-        className={`overflow-y-auto transition-all duration-500 ease-out ${
+        className={`min-h-0 overflow-y-auto transition-all duration-500 ease-out ${
           visible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
         }`}
       >
@@ -49,7 +50,7 @@ export function Step2Workspace({
 
       {/* Center — Images */}
       <div
-        className={`overflow-hidden transition-opacity duration-500 ease-out ${
+        className={`min-h-0 overflow-hidden transition-opacity duration-500 ease-out ${
           visible ? 'opacity-100' : 'opacity-0'
         }`}
       >
@@ -62,7 +63,7 @@ export function Step2Workspace({
 
       {/* Right — Preview */}
       <div
-        className={`overflow-y-auto transition-all duration-500 ease-out ${
+        className={`min-h-0 overflow-y-auto transition-all duration-500 ease-out ${
           visible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
         }`}
       >

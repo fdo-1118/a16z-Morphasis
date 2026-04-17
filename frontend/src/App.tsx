@@ -47,7 +47,6 @@ export function App() {
     if (contentImage) triggerFusion(contentImage, selectedStyle, dataUri);
   }, [contentImage, selectedStyle, triggerFusion]);
 
-  // Re-run fusion if both inputs become available simultaneously
   useEffect(() => {
     if (contentImage && (selectedStyle || secondImage) && status === 'idle') {
       triggerFusion(contentImage, selectedStyle, secondImage);
@@ -56,21 +55,24 @@ export function App() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col bg-surface-0">
+    /* h-screen + overflow-hidden keeps the entire page fixed — nothing shifts on image load */
+    <div className="h-screen flex flex-col overflow-hidden bg-surface-0">
       <Header />
 
       {/* Teal section banner */}
-      <div style={{ background: '#15627C' }} className="px-8 py-5">
-        <h1
-          className="text-4xl font-normal text-white"
-          style={{ fontFamily: "'orpheus-pro', 'Big Caslon', Georgia, serif" }}
-        >
-          Morphasis
-        </h1>
+      <div className="shrink-0" style={{ background: '#15627C' }}>
+        <div className="px-8 py-5">
+          <h1
+            className="text-4xl font-normal text-white"
+            style={{ fontFamily: "'orpheus-pro', 'Big Caslon', Georgia, serif" }}
+          >
+            Morphasis
+          </h1>
+        </div>
       </div>
 
-      {/* Main content — fills remaining height */}
-      <div className="flex-1 flex flex-col overflow-hidden">
+      {/* Workspace — fills all remaining height, never resizes */}
+      <div className="flex-1 min-h-0 overflow-hidden">
         {step === 'upload' ? (
           <Step1Upload onImageReady={handleContentImage} />
         ) : (
