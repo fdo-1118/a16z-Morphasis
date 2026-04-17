@@ -19,6 +19,10 @@ export interface Style {
   tags: string[];
   visibility: 'public' | 'community' | 'private';
   createdAt: string;
+  lightingNotes?: string;
+  whenToUse?: string[];
+  doNotUseWhen?: string[];
+  mjCodes?: string[];
 }
 
 export interface FusionRequest {
